@@ -1,17 +1,17 @@
 //Party constructor
-function Party(phoneNumber, name, partySize) {
+function Party(phoneNumber, name, email) {
     this.phoneNumber = phoneNumber;
     this.name = name;
-    this.partySize = partySize
+    this.email = email
     this.seated = false
 }
 
 //Create array
 partyArr = []
 //Create a sample parties
-let smithParty = new Party('123-456-7890', 'Smith', 5)
-let jonesParty = new Party('523-456-7890', 'Jones', 4)
-let johnsonParty = new Party('823-456-7890', 'Johnson', 2)
+let smithParty = new Party('123-456-7890', 'Smith', 'smith@email.com')
+let jonesParty = new Party('523-456-7890', 'Jones', 'jones@email.com')
+let johnsonParty = new Party('823-456-7890', 'Johnson', 'johnson@email.com')
 
 //Push partys into array
 partyArr.push(smithParty)
@@ -52,7 +52,7 @@ app.use(express.json());
 //ROUTES================================================================
 
 app.get('/', function (req, res) {
-    res.send('home page')
+    res.json(partyArr)
 });
 
 app.get('/tables', function (req, res) {
@@ -75,6 +75,20 @@ app.post('/makereservation', function(req, res) {
     } else {
         res.send('you have been placed on the waitlist')
     }
+})
+
+app.post('/dropparty', function(req, res) {
+    console.log(req.body)
+    let incomingObject = req.body
+    for (i = 0; i < partyArr.length; i++) {
+        console.log(incomingObject.name)
+        console.log(partyArr[i].name)
+        if (incomingObject.name === partyArr[i].name) {
+            partyArr.splice(i, 1)
+        }
+    }
+    tableSeater() //Recalculate who is seated and who isn't
+    res.json(partyArr)
 })
 
 //START SERVER================================================================
