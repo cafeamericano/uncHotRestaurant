@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Star Wars - Express</title>
+    <!-- Latest compiled and minified CSS & JS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="jumbotron">
+        <h1>hot restaurant</h1>
+        <h3>Current reservations and waiting list</h3>
+        <hr />
+        <a href="/add"
+          ><button class="btn btn-danger btn-lg">
+            <span class="fa fa-plus"></span> make reservation
+          </button></a
+        >
+        <a href="/api/characters"
+          ><button class="btn btn-danger btn-lg">
+            <span class="glyphicon glyphicon-home"></span></button
+        ></a>
+        <!-- current tables-->
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-header">
+              <h4>current reservations</h4>
+            </div>
+            <div class="card-body">
+              <ul id="currentTable" class="list-group">
+                <li class="list-group-item mt-4">
+                  <h2>table #1</h2>
+                  <hr />
+                  <h2>Id: 11</h2>
+                  <h2>Name: 11</h2>
+                  <h2>Email: 11</h2>
+                  <h2>Phone: 11</h2>
+                </li>
+                <li class="list-group-item mt-4">
+                  <h2>table #2</h2>
+                  <hr />
+                  <h2>Id: 22</h2>
+                  <h2>Name: 22</h2>
+                  <h2>Email: 22</h2>
+                  <h2>Phone: 22</h2>
+                </li>
+                <li class="list-group-item mt-4">
+                  <h2>table #3</h2>
+                  <hr />
+                  <h2>Id: 33</h2>
+                  <h2>Name: 33</h2>
+                  <h2>Email: 33</h2>
+                  <h2>Phone: 33</h2>
+                </li>
+                <li class="list-group-item mt-4">
+                  <h2>table #4</h2>
+                  <hr />
+                  <h2>Id: 44</h2>
+                  <h2>Name: 44</h2>
+                  <h2>Email: 44</h2>
+                  <h2>Phone: 44</h2>
+                </li>
+                <li class="list-group-item mt-4">
+                  <h2>table #5</h2>
+                  <hr />
+                  <h2>Id: 55</h2>
+                  <h2>Name: 55</h2>
+                  <h2>Email: 55</h2>
+                  <h2>Phone: 55</h2>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- current reservation-->
+      </div>
+
+      <div class="card mt-4">
+        <div class="card-header">
+          <h4>Waiting List</h4>
+        </div>
+        <div class="card-body">
+          <ul id="waitList" class="list-group">
+            <li class="list-group-item mt-4">
+              <h2>Table #1</h2>
+              <hr />
+              <h2>ID:</h2>
+              <h2>Name:</h2>
+              <h2>Email:</h2>
+              <h2>Phone:</h2>
+            </li>
+            <li class="list-group-item mt-4">
+              <h2>Table #2</h2>
+              <hr />
+              <h2>ID:</h2>
+              <h2>Name:</h2>
+              <h2>Email:</h2>
+              <h2>Phone:</h2>
+            </li>
+            <li class="list-group-item mt-4">
+              <h2>Table #3</h2>
+              <hr />
+              <h2>ID:</h2>
+              <h2>Name:</h2>
+              <h2>Email:</h2>
+              <h2>Phone:</h2>
+            </li>
+            <li class="list-group-item mt-4">
+              <h2>Table #4</h2>
+              <hr />
+              <h2>ID:</h2>
+              <h2>Name:</h2>
+              <h2>Email:</h2>
+              <h2>Phone:</h2>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      function currentTableQuery() {
+        $.ajax({ url: "/dropparty", method: "GET" }).then(function(data) {
+          let tableNum = 1;
+          let waitlistNum = 1;
+
+          data.forEach(party => {
+            if (party.seated) {
+              // Put this data in the seated section
+
+              let li = document.createElement("li");
+              li.className("list-group-item mt-4");
+              // phoneNumber name email
+              li.append(
+                document.createElement("h2").textContent("Table #" + tableNum)
+              );
+              li.append(document.createElement("hr"));
+              li.append(
+                document
+                  .createElement("h2")
+                  .textContent("Phone Number: " + party.phoneNumber)
+              );
+              li.append(
+                document.createElement("h2").textContent("Name: " + party.name)
+              );
+              li.append(
+                document
+                  .createElement("h2")
+                  .textContent("Email: " + party.email)
+              );
+
+              document.getElementById("currentTable").append(li);
+              tableNum++;
+            } else {
+              // Put this data in the waitlist
+              let li = document.createElement("li");
+              li.className("list-group-item mt-4");
+              // phoneNumber name email
+              li.append(
+                document.createElement("h2").textContent("Waitlist #" + tableNum)
+              );
+              li.append(document.createElement("hr"));
+              li.append(
+                document
+                  .createElement("h2")
+                  .textContent("Phone Number: " + party.phoneNumber)
+              );
+              li.append(
+                document.createElement("h2").textContent("Name: " + party.name)
+              );
+              li.append(
+                document
+                  .createElement("h2")
+                  .textContent("Email: " + party.email)
+              );
+
+              document.getElementById("waitList").append(li);
+              waitlistNum++;
+            }
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
